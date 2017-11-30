@@ -2,6 +2,7 @@ import React, {PureComponent as Component} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import EventListener from '../EventListener'
+import Animate from '../Animate'
 import Divider from './Divider'
 import Header from './Header'
 import Item from './Item'
@@ -201,7 +202,7 @@ class Dropdown extends Component {
       }
 
       if (child.type === Menu || child.type === MenuComponent) {
-        return isOpen ? React.cloneElement(child, {
+        const composedMenu = React.cloneElement(child, {
           closeMenuOnClick,
           direction,
           isOpen,
@@ -210,7 +211,18 @@ class Dropdown extends Component {
           ref: 'menu',
           trigger: this.triggerNode,
           selectedIndex: child.props.selectedIndex !== undefined ? child.props.selectedIndex : selectedIndex
-        }) : null
+        })
+
+        return (
+          <Animate
+            animateOnMount={false}
+            in={isOpen}
+            wait={8}
+            unmountOnExit
+          >
+            {composedMenu}
+          </Animate>
+        )
       }
 
       return child

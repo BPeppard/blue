@@ -28,6 +28,29 @@ export const DropComponent = (/* istanbul ignore next */ options = defaultOption
   const portalOptions = Object.assign({}, defaultOptions, options)
 
   class Drop extends Component {
+    constructor () {
+      super()
+      this.isClosing = false
+      this.isOpening = false
+    }
+
+    componentWillReceiveProps (nextProps) {
+      if (nextProps.isOpen === false && !this.isClosing) {
+        this.props.closePortal()
+        this.isClosing = true
+      }
+
+      if (nextProps.isOpen === true && !this.isOpening) {
+        this.props.openPortal()
+        this.isOpening = true
+      }
+    }
+
+    componentWillUnmount () {
+      this.isClosing = null
+      this.isOpening = null
+    }
+
     render () {
       const {
         className,
@@ -72,7 +95,7 @@ export const DropComponent = (/* istanbul ignore next */ options = defaultOption
             <ComposedComponent
               className={className}
               closePortal={closePortal}
-              isOpen={portalIsOpen}
+              isOpen={portalIsMounted}
               onClose={onClose}
               onOpen={onOpen}
               style={style}

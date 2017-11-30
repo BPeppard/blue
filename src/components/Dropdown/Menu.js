@@ -46,7 +46,7 @@ const dropOptions = {
   autoPosition: true,
   id: 'Dropdown',
   openOnArrowDown: true,
-  timeout: 0
+  timeout: 8
 }
 
 class Menu extends Component {
